@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digit Recognizer</title>
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    />
+
+  </head>
+  <body>
+    <h1>Digit Recognizer</h1>
+    <div class="main-container">
+        <div class="left-section" >
+            <canvas id="drawingCanvas"></canvas>
+            <button id="clearButton">Clear</button>
+        </div>
+      <table >
+        <thead>
+          <tr>
+            <th>Prediction</th>
+            <th>Probability</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody">
+          <tr>
+            <td colspan="2">Draw a digit to classify</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+  </body>
+</html>
