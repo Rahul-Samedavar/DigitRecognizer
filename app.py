@@ -49,7 +49,7 @@ def home():
 def classify():
     drawing = request.get_json()['drawing']
     drawing = np.array(drawing)
-    pred = model.predict(np.expand_dims(drawing, axis=0).astype(np.float16))[0].astype(np.float64)
+    pred = model.predict(np.expand_dims(drawing, axis=0).astype(np.float16), verbose=0)[0].astype(np.float64)
     return {classes[i]: pred[i] for i in range(10)}
     
 if __name__ == '__main__':

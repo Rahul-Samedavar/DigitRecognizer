@@ -90,7 +90,7 @@ tr:hover {
     transition: width 0.4s ease-in-out;
 }
 
-button {
+button, .references img {
     display: block;
     margin: 20px auto 0;
     padding: 12px 20px;
@@ -119,4 +119,22 @@ button:active {
     .main-container {
         grid-template-columns: 1fr;
     }
+}
+
+
+.references {
+    width: 100%;
+    position: relative;
+}
+ 
+.references div{
+    position: absolute;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.references img{
+    padding: 0;
+    width: 40px;
 }
