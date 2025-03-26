@@ -5,6 +5,11 @@ This project focuses on developing a **Convolutional Neural Network (CNN)** mode
 ![](Images/demo4.png)
 
 ---
+## 🚀 **Deployed in HuggingFace Space**
+- The Modela and GUI have been deployed in HuggingFace Space.
+- Access it from [here](https://huggingface.co/Spaces/Rahul-Samedavar/DigitRecognizer)
+
+---
 
 ## 🚀 **Features**
 - Real-time digit classification with interactive drawing canvas
@@ -147,6 +152,7 @@ checkpoint = ModelCheckpoint(
 ---
 
 ## 📊 **Results & Performance**
+- **Best Accuracy:** 99.37%
 - **Best Top K Accuracy:** 99.98%
 - **Best Precision:** 99.39%
 - **Best Recall:** 99.33%

@@ -4,8 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const clearButton = document.getElementById('clearButton');
     const resultsBody = document.getElementById('resultsBody');
 
-
-    const canvasSize = { width: 280, height: 280 }; 
+    const canvasSize = { width: 280, height: 280 };
     canvas.width = canvasSize.width;
     canvas.height = canvasSize.height;
 
@@ -15,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
-    ctx.lineWidth = 15; 
+    ctx.lineWidth = 18;
     ctx.strokeStyle = 'black';
 
     function clearCanvas() {
@@ -30,9 +29,67 @@ document.addEventListener('DOMContentLoaded', function () {
 
     clearCanvas();
 
+    function getBoundingBox(imageData) {
+        const { data, width, height } = imageData;
+        let minX = width, minY = height, maxX = 0, maxY = 0;
+        let found = false;
+
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                const idx = (y * width + x) * 4;
+                const alpha = data[idx + 3];  
+                const isBlack = data[idx] < 128 && alpha > 0;
+
+                if (isBlack) {
+                    if (x < minX) minX = x;
+                    if (x > maxX) maxX = x;
+                    if (y < minY) minY = y;
+                    if (y > maxY) maxY = y;
+                    found = true;
+                }
+            }
+        }
+
+        if (!found) return null;
+
+        return {
+            x: minX,
+            y: minY,
+            width: maxX - minX,
+            height: maxY - minY,
+        };
+    }
+
     function canvasToArray() {
         const imageData = ctx.getImageData(0, 0, canvasSize.width, canvasSize.height);
-        const data = imageData.data;
+        const box = getBoundingBox(imageData);
+
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCanvas.width = canvasSize.width;
+        tempCanvas.height = canvasSize.height;
+
+        // Fill with white background
+        tempCtx.fillStyle = 'white';
+        tempCtx.fillRect(0, 0, canvasSize.width, canvasSize.height);
+
+        if (box) {
+            const offsetX = (canvasSize.width - box.width) / 2;
+            const offsetY = (canvasSize.height - box.height) / 2;
+
+            // Draw only the centered portion onto the temp canvas
+            tempCtx.drawImage(
+                canvas,
+                box.x, box.y, box.width, box.height,
+                offsetX, offsetY, box.width, box.height
+            );
+        } else {
+            // If nothing is drawn, use the original canvas
+            tempCtx.drawImage(canvas, 0, 0);
+        }
+
+        const centeredData = tempCtx.getImageData(0, 0, canvasSize.width, canvasSize.height);
+        const data = centeredData.data;
 
         const result = Array(gridSize).fill(0).map(() => Array(gridSize).fill(0));
 
